@@ -51,7 +51,7 @@ export default function PublicPage() {
       {/* Navbar */}
       <nav className="flex items-center justify-between px-10 py-6 bg-white/80 backdrop-blur-lg shadow-md sticky top-0 z-50">
         <div className="flex items-center gap-3">
-          <img src="/logo.svg" alt="logo" className="w-10 h-10" />
+          <img src="/src/assets/logo2.png" alt="logo" className="w-10 h-10" />
           <span className="text-2xl font-extrabold tracking-tight text-gray-900">
             Planorama
           </span>
@@ -75,9 +75,9 @@ export default function PublicPage() {
         className="min-h-screen flex flex-col items-center justify-center text-center py-32 px-6 bg-gradient-to-br from-blue-50 via-white to-purple-50 snap-center"
       >
         <motion.img
-          src="/layla-avatar.png"
+          src="/src/assets/logo.png"
           alt="layla"
-          className="w-20 h-20 rounded-full mb-6 shadow-lg"
+          className="w-70 mb-10"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8 }}
@@ -99,9 +99,9 @@ export default function PublicPage() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4, duration: 0.8 }}
         >
-          Craft, personalize, and optimize your itineraries with our AI-powered
-          trip planner. Perfect for vacations, workations, and everyday
-          adventures.
+          Susun, personalisasikan, dan optimalkan rencana perjalanan Anda dengan
+          perencana perjalanan bertenaga AI kami. Sempurna untuk liburan,
+          bekerja, dan petualangan sehari-hari.
         </motion.p>
         <motion.button
           onClick={() => navigate("/login")}
@@ -133,7 +133,7 @@ export default function PublicPage() {
           </span>{" "}
           Adventure
         </motion.h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-6xl mx-auto mb-12">
           <motion.div
             className="p-6 bg-gray-50 rounded-2xl shadow-lg"
             initial={{ opacity: 0, x: -50 }}
@@ -141,11 +141,12 @@ export default function PublicPage() {
             transition={{ duration: 0.6 }}
           >
             <h3 className="text-2xl font-bold text-gray-900 bg-gradient-to-r from-lime-200 to-lime-300 inline-block px-3 py-1 rounded-lg mb-4">
-              Tailored Perfection
+              Kesempurnaan yang Disesuaikan
             </h3>
             <p className="text-gray-600 leading-relaxed">
-              Our advanced algorithms analyze your preferences for sights,
-              dining, and lodging to craft a travel plan that’s uniquely yours.
+              Algoritme canggih kami menganalisis preferensi Anda terhadap
+              tempat wisata, tempat makan, dan penginapan untuk menyusun rencana
+              perjalanan yang sesuai dengan keinginan Anda.
             </p>
           </motion.div>
           <motion.div
@@ -155,12 +156,29 @@ export default function PublicPage() {
             transition={{ duration: 0.6 }}
           >
             <h3 className="text-2xl font-bold text-gray-900 bg-gradient-to-r from-lime-200 to-lime-300 inline-block px-3 py-1 rounded-lg mb-4">
-              Spark Your Wanderlust
+              Petualangan yang Lebih Cerdas
             </h3>
             <p className="text-gray-600 leading-relaxed">
-              Discover travel inspiration from social media, explore curated
-              destinations, and seamlessly add them to your personalized
-              itinerary.
+              Nikmati pengalaman perjalanan yang lebih efisien dengan
+              rekomendasi berbasis AI yang menghemat waktu, biaya, dan tenaga,
+              sehingga Anda bisa fokus menikmati setiap momen.
+            </p>
+          </motion.div>
+        </div>
+        <div className="grid grid-cols-1 max-w-lg mx-auto">
+          <motion.div
+            className="p-6 bg-gray-50 rounded-2xl shadow-lg"
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <h3 className="text-2xl font-bold text-gray-900 bg-gradient-to-r from-lime-200 to-lime-300 inline-block px-3 py-1 rounded-lg mb-4">
+              Perjalanan Tanpa Khawatir
+            </h3>
+            <p className="text-gray-600 leading-relaxed">
+              Dapatkan panduan real-time untuk menghindari kerumunan, menemukan
+              rute alternatif, dan memastikan perjalanan Anda aman dan nyaman di
+              mana saja.
             </p>
           </motion.div>
         </div>
