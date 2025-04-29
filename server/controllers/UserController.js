@@ -4,7 +4,7 @@ const { OAuth2Client } = require("google-auth-library");
 const client = new OAuth2Client();
 
 module.exports = class UserController {
-  static async loginGoogle(req, res) {
+  static async loginGoogle(req, res, next) {
     try {
       const { googleToken } = req.body;
 
@@ -28,7 +28,7 @@ module.exports = class UserController {
       const access_token = signToken({ id: user.id });
       res.json({ access_token });
     } catch (error) {
-      console.log(error);
+      next(error);
     }
   }
 };

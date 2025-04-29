@@ -2,13 +2,10 @@
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class DestinationDetail extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      // define association here
+      DestinationDetail.belongsTo(models.Destination, {
+        foreignKey: "destinationId",
+      });
     }
   }
   DestinationDetail.init(
@@ -25,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: true,
       },
-      phoneNumber: {
+      phone_number: {
         type: DataTypes.STRING,
         allowNull: true,
         validate: {
@@ -42,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
           isUrl: { msg: "Website must be a valid URL" },
         },
       },
-      openingHours: {
+      opening_hours: {
         type: DataTypes.TEXT,
         allowNull: true,
       },
@@ -60,7 +57,7 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
-      totalReviews: {
+      total_reviews: {
         type: DataTypes.INTEGER,
         allowNull: true,
         validate: {
