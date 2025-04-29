@@ -48,24 +48,6 @@ export default function PublicPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white text-gray-900 font-sans">
-      {/* Navbar */}
-      <nav className="flex items-center justify-between px-10 py-6 bg-white/80 backdrop-blur-lg shadow-md sticky top-0 z-50">
-        <div className="flex items-center gap-3">
-          <img src="/src/assets/logo2.png" alt="logo" className="w-10 h-10" />
-          <span className="text-2xl font-extrabold tracking-tight text-gray-900">
-            Planorama
-          </span>
-        </div>
-        <motion.button
-          onClick={() => navigate("/login")}
-          className="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-6 py-2.5 rounded-full font-medium shadow-lg hover:shadow-xl transition-all duration-300"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          Login
-        </motion.button>
-      </nav>
-
       {/* Hero Section */}
       <motion.section
         ref={heroRef}
@@ -77,7 +59,7 @@ export default function PublicPage() {
         <motion.img
           src="/src/assets/logo.png"
           alt="layla"
-          className="w-70 mb-10"
+          className="w-60 mb-10"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8 }}
@@ -201,8 +183,9 @@ export default function PublicPage() {
           Discover Global Adventures
         </motion.h2>
         <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
-          Explore unique itineraries crafted by travelers worldwide. Find
-          inspiration for your next trip and share your own story.
+          Jelajahi rencana perjalanan unik yang dibuat oleh wisatawan di seluruh
+          dunia. Temukan inspirasi untuk perjalanan Anda berikutnya dan bagikan
+          kisah Anda sendiri.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
           {destinations.map((dest, index) => (
