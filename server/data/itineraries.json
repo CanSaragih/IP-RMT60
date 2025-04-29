@@ -1,0 +1,16 @@
+[
+  {
+    "tripId": 1,
+    "dayNumber": 1,
+    "location": "Tokyo Tower",
+    "activity": "Visit Tokyo Tower and nearby park",
+    "notes": "Buy tickets in advance"
+  },
+  {
+    "tripId": 1,
+    "dayNumber": 2,
+    "location": "Shibuya Crossing",
+    "activity": "Shopping and nightlife exploration",
+    "notes": "Watch for peak traffic times"
+  }
+]

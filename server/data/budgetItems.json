@@ -1,0 +1,20 @@
+[
+  {
+    "tripId": 1,
+    "category": "Accommodation",
+    "amount": 4000000,
+    "notes": "Hotel in Shinjuku"
+  },
+  {
+    "tripId": 1,
+    "category": "Food",
+    "amount": 1500000,
+    "notes": "Local ramen and sushi"
+  },
+  {
+    "tripId": 1,
+    "category": "Transport",
+    "amount": 1000000,
+    "notes": "Subway pass"
+  }
+]

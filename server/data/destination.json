@@ -1,0 +1,38 @@
+[
+  {
+    "name": "Tokyo Tower",
+    "googlePlaceId": "ChIJ4zGFAZpYwokRGUGph3Mf37k",
+    "latitude": 35.658581,
+    "longitude": 139.745433
+  },
+  {
+    "name": "Eiffel Tower",
+    "googlePlaceId": "ChIJLU7jZClu5kcR4PcOOO6p3I0",
+    "latitude": 48.85837,
+    "longitude": 2.294481
+  },
+  {
+    "name": "Uluwatu Temple",
+    "googlePlaceId": "ChIJz8xzYDRU0i0RWKxWA0NKZ5c",
+    "latitude": -8.829167,
+    "longitude": 115.083056
+  },
+  {
+    "name": "Statue of Liberty",
+    "googlePlaceId": "ChIJK2aD9pZYwokR1jaK1aMgFYA",
+    "latitude": 40.689247,
+    "longitude": -74.044502
+  },
+  {
+    "name": "Colosseum",
+    "googlePlaceId": "ChIJk5d0yQpOlhMRVxw8F-FVbsk",
+    "latitude": 41.89021,
+    "longitude": 12.492231
+  },
+  {
+    "name": "Sydney Opera House",
+    "googlePlaceId": "ChIJ3S-JXmauEmsRUcIaWtf4MzE",
+    "latitude": -33.8567844,
+    "longitude": 151.213108
+  }
+]
