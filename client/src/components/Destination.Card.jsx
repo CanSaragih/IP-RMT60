@@ -14,11 +14,15 @@ export default function DestinationCard({ dest, delay }) {
       ref={ref}
       initial={{ opacity: 0, y: 50 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.8, ease: "easeOut", delay }}
-      whileHover={{ scale: 1.03, boxShadow: "0 10px 30px rgba(0, 0, 0, 0.1)" }}
+      transition={{ duration: 0.8, ease: "easeOut", delay }} // Transition untuk animasi muncul
+      whileHover={{
+        scale: 1.03,
+        boxShadow: "0 10px 30px rgba(0, 0, 0, 0.1)",
+        transition: { duration: 0.3, ease: "easeOut" }, // Transition khusus untuk hover
+      }}
       whileTap={{ scale: 0.98 }}
       onClick={() => navigate(`/destination/${dest.id}`)}
-      className="relative bg-white rounded-3xl overflow-hidden shadow-xl cursor-pointer transition-all duration-300 hover:shadow-2xl"
+      className="relative bg-white rounded-3xl overflow-hidden shadow-xl cursor-pointer hover:shadow-2xl"
     >
       {/* Image with gradient overlay */}
       <div className="relative">
