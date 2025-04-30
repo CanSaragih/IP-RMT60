@@ -10,6 +10,10 @@ function errorHandler(error, req, res, next) {
     return res.status(404).json({ message: error.message });
   }
 
+  if (error.name === "BadRequest") {
+    return res.status(400).json({ message: error.message });
+  }
+
   if (error.status) {
     return res.status(error.status).json({ message: error.message });
   }
