@@ -1,12 +1,13 @@
 import { BrowserRouter, Routes, Route } from "react-router";
+import { PrivateLayout, PublicLayout } from "./layouts/RootLayout";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Login from "./pages/Login";
 import HomePage from "./pages/HomePage";
 import PublicPage from "./pages/Public.page";
 import DetailDestination from "./pages/DetailDesination";
-import { PrivateLayout, PublicLayout } from "./layouts/RootLayout";
 import ItineraryPage from "./pages/ItineraryPage";
+import TripOverviewPage from "./pages/TripOverviewPage";
 
 function App() {
   return (
@@ -36,6 +37,10 @@ function App() {
           <Route
             path="/trips/:tripId/itineraries"
             element={<ItineraryPage />}
+          />
+          <Route
+            path="/trips/:tripId/overview"
+            element={<TripOverviewPage />}
           />
         </Route>
       </Routes>
