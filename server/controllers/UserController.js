@@ -1,5 +1,5 @@
 const { signToken } = require("../helpers/jwt");
-const { User } = require("../models");
+const { User, Trip } = require("../models");
 const { OAuth2Client } = require("google-auth-library");
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -38,6 +38,20 @@ module.exports = class UserController {
         },
       });
     } catch (error) {
+      next(error);
+    }
+  }
+
+  static async getTripByUserId(req, res, next) {
+    try {
+      const userId = req.user.id;
+      const trips = await Trip.findAll({
+        where: { userId },
+        order: [["createdAt", "DESC"]],
+      });
+      res.json(trips);
+    } catch (error) {
+      console.log(error);
       next(error);
     }
   }

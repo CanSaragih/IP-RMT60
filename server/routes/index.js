@@ -15,6 +15,9 @@ router.get(
   DestinationController.publicDestinationById
 );
 
+// User Profile
+router.get("/trips/user", authentication, UserController.getTripByUserId);
+
 // Destination Generator AI
 router.get("/trips", authentication, TripController.getFindTrip);
 router.post("/trips", authentication, TripController.createTrips);
