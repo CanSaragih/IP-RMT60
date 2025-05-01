@@ -28,7 +28,15 @@ module.exports = class UserController {
       }
 
       const access_token = signToken({ id: user.id });
-      res.json({ access_token });
+      res.json({
+        access_token,
+        user: {
+          id: user.id,
+          email: user.email,
+          username: user.username,
+          avatarUrl: user.avatarUrl,
+        },
+      });
     } catch (error) {
       next(error);
     }

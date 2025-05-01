@@ -53,6 +53,10 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       generated_plan: DataTypes.TEXT,
+      photoReference: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
     },
     {
       sequelize,

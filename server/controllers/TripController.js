@@ -1,5 +1,5 @@
 const { geminiApi } = require("../helpers/geminiAPI");
-const { Trip } = require("../models");
+const { Trip, User } = require("../models");
 
 const axios = require("axios");
 
@@ -21,10 +21,27 @@ module.exports = class TripController {
     }
   }
 
+  static async getTripById(req, res, next) {
+    try {
+      const { tripId } = req.params;
+      const trip = await Trip.findByPk(tripId);
+      if (!trip) throw { name: "NotFound" };
+      res.json(trip);
+    } catch (err) {
+      next(err);
+    }
+  }
+
   static async createTrips(req, res, next) {
     try {
-      const { title, start_date, end_date, total_budget, generated_plan } =
-        req.body;
+      const {
+        title,
+        start_date,
+        end_date,
+        total_budget,
+        generated_plan,
+        photoReference,
+      } = req.body;
       const userId = req.user.id;
       const newTrip = await Trip.create({
         userId,
@@ -33,10 +50,13 @@ module.exports = class TripController {
         end_date,
         total_budget,
         generated_plan,
+        photoReference,
+        userId: req.user.id,
       });
 
       res.status(201).json(newTrip);
     } catch (error) {
+      console.log("CREATE TRIP ERROR >>> ", error);
       next(error);
     }
   }
