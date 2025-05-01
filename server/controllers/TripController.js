@@ -122,4 +122,24 @@ module.exports = class TripController {
       next(error);
     }
   }
+
+  static async updateTrip(req, res, next) {
+    try {
+      const { tripId } = req.params;
+      const { title, start_date, end_date } = req.body;
+
+      const trip = await Trip.findByPk(tripId);
+      if (!trip) throw { name: "NotFound", message: "Trip not found" };
+
+      trip.title = title;
+      trip.start_date = start_date || trip.start_date;
+      trip.end_date = end_date || trip.end_date;
+
+      await trip.save();
+      res.status(200).json(trip);
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+  }
 };

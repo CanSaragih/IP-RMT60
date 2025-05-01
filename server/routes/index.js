@@ -36,11 +36,15 @@ router.post(
   authentication,
   ItineraryController.createItinerary
 );
+
+// Trip Overview
+router.put("/trips/:tripId", authentication, TripController.updateTrip);
 router.put(
   "/itineraries/:id",
   authentication,
   ItineraryController.updateItinerary
 );
+router.put("/trips/:tripId/regenerate", AiController.regenerateTripPlan);
 router.delete(
   "/itineraries/:id",
   authentication,
