@@ -15,6 +15,8 @@ import { https } from "../helpers/https";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
 
 const DestinationDetailModal = ({ destination, onClose }) => {
   const [tripData, setTripData] = useState({
@@ -23,6 +25,7 @@ const DestinationDetailModal = ({ destination, onClose }) => {
     city: "",
     notes: "",
   });
+  const navigate = useNavigate();
   const [isSaving, setIsSaving] = useState(false);
 
   const baseUrl = https.defaults.baseURL;
@@ -30,17 +33,6 @@ const DestinationDetailModal = ({ destination, onClose }) => {
   const imageUrl = destination.photos?.[0]?.photo_reference
     ? `${baseUrl}/places/images?ref=${destination.photos[0].photo_reference}`
     : "https://via.placeholder.com/800x500?text=No+Image";
-
-  const hasDetails = destination.details;
-  const openingHours = hasDetails
-    ? destination.details.opening_hours?.weekday_text
-    : null;
-  const phoneNumber = hasDetails
-    ? destination.details.formatted_phone_number
-    : null;
-  const website = hasDetails ? destination.details.website : null;
-  const types = destination.types?.filter((t) => !t.includes("_")) || [];
-  const currentDay = new Date().toLocaleString("en-us", { weekday: "long" });
 
   const handleDateChange = (date, field) => {
     setTripData((prev) => ({
@@ -94,19 +86,24 @@ const DestinationDetailModal = ({ destination, onClose }) => {
         city: tripData.city,
         total_budget: budget,
         generated_plan: aiMessage,
+        photoReference: destination.photos[0]?.photo_reference,
       };
 
-      await https.post("/trips", tripPayload, {
+      const tripRes = await https.post("/trips", tripPayload, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },
       });
 
-      alert("Trip saved successfully!");
-      onClose();
+      const tripId = tripRes.data.id;
+      toast.success("Trip saved successfully! 👌");
+      navigate(`/trips/${tripId}/itineraries`);
     } catch (error) {
       console.error("Failed to save trip:", error);
-      alert("Failed to save trip");
+      toast.error(
+        error.response.data.message ||
+          "Failed to save trip. Please try again.😢 "
+      );
     } finally {
       setIsSaving(false);
     }
@@ -188,11 +185,6 @@ const DestinationDetailModal = ({ destination, onClose }) => {
                     ({destination.user_ratings_total?.toLocaleString()})
                   </span>
                 </div>
-                {types.length > 0 && (
-                  <span className="text-sm text-gray-600 bg-gray-100 px-3 py-1 rounded-full">
-                    {types[0]}
-                  </span>
-                )}
               </div>
             </motion.div>
 

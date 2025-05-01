@@ -13,6 +13,7 @@ export default function LoginModal({ onClose }) {
       googleToken: response.credential,
     });
     localStorage.setItem("access_token", data.access_token);
+    localStorage.setItem("user_google", JSON.stringify(data.user));
     onClose();
     navigate("/home");
   }

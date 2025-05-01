@@ -3,7 +3,6 @@ import { Star } from "lucide-react";
 const DestinationGeneratedCard = ({
   title,
   img,
-  price,
   rating,
   reviews,
   address,
