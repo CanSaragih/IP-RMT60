@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { format, eachDayOfInterval, parseISO } from "date-fns";
 import { https } from "../helpers/https";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import {
   ChevronDown,
   ChevronRight,
@@ -13,6 +13,7 @@ import {
 import { toast } from "react-toastify";
 
 export default function ItineraryPage() {
+  let navigate = useNavigate();
   const { tripId } = useParams();
   const [trip, setTrip] = useState(null);
   const [itineraries, setItineraries] = useState([]);
@@ -88,10 +89,10 @@ export default function ItineraryPage() {
         }
       );
 
-      toast.success("Trip saved successfully! 👌");
-      fetchItineraries();
+      toast.success("Itinerary saved successfully! 👌");
+      navigate(`/trips/${tripId}/overview`);
     } catch (error) {
-      console.error("Failed to save trip:", error);
+      console.error("Failed to save itinerary:", error);
       toast.error(
         error.response.data.message ||
           "Failed to save trip. Please try again.😢"

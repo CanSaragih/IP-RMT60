@@ -163,22 +163,7 @@ export default function TripOverviewPage() {
             <h3 className="text-lg font-semibold text-gray-900 mb-4">
               Itinerary Days
             </h3>
-            <ul className="space-y-2">
-              {itineraries.map((item) => (
-                <li key={item.id}>
-                  <button
-                    onClick={() =>
-                      document
-                        .getElementById(`day-${item.dayNumber}`)
-                        .scrollIntoView({ behavior: "smooth" })
-                    }
-                    className="w-full text-left text-gray-700 hover:text-blue-600 transition-colors"
-                  >
-                    Day {item.dayNumber}
-                  </button>
-                </li>
-              ))}
-            </ul>
+            <ul className="space-y-2"></ul>
             <Link
               to="/your-profile"
               className="mt-4 inline-block w-full text-center bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors"
@@ -248,9 +233,7 @@ export default function TripOverviewPage() {
                   className="border-b border-gray-200 pb-6 mb-6 last:border-b-0 last:mb-0"
                 >
                   <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-xl font-semibold text-gray-900">
-                      Day {item.dayNumber}
-                    </h3>
+                    <h3 className="text-xl font-semibold text-gray-900"></h3>
                     <div className="flex space-x-2">
                       <button
                         onClick={() => setEditingItinerary(idx)}

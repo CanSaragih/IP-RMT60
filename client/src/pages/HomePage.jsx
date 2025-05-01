@@ -136,32 +136,34 @@ export default function HomePage() {
                 "Explore the World with Ease! ✈️"
               </p>
 
-              <div className="w-full max-w-2xl relative">
-                <motion.textarea
-                  value={prompt}
-                  onChange={(e) => setPrompt(e.target.value)}
-                  className="w-full bg-gray-50 border border-gray-200 p-4 rounded-xl resize-none shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400 text-gray-900"
-                  placeholder="e.g. Rekomendasi tempat wisata..."
-                  rows={3}
-                  initial={{ scale: 0.95, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 0.6, delay: 0.2 }}
-                />
-                <motion.button
-                  onClick={handleGenerate}
-                  disabled={loading}
-                  className="absolute bottom-3 right-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition flex items-center gap-2"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  {loading ? (
-                    "..."
-                  ) : (
-                    <>
-                      Generate <span>✈️</span>
-                    </>
-                  )}
-                </motion.button>
+              <div className="flex justify-center items-start mt-10 px-4">
+                <div className="w-full max-w-2xl relative">
+                  <motion.textarea
+                    value={prompt}
+                    onChange={(e) => setPrompt(e.target.value)}
+                    className="w-full bg-gray-50 border border-gray-200 p-4 rounded-xl resize-none shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400 text-gray-900"
+                    placeholder="e.g. Rekomendasi tempat wisata..."
+                    rows={3}
+                    initial={{ scale: 0.95, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.6, delay: 0.2 }}
+                  />
+                  <motion.button
+                    onClick={handleGenerate}
+                    disabled={loading}
+                    className="absolute bottom-3 right-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition flex items-center gap-2"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    {loading ? (
+                      "..."
+                    ) : (
+                      <>
+                        Generate <span>✈️</span>
+                      </>
+                    )}
+                  </motion.button>
+                </div>
               </div>
             </motion.div>
           </div>

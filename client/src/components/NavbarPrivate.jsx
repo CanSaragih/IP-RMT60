@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Search, User, Settings, LogOut } from "lucide-react";
+import { toast } from "react-toastify";
 
 export default function NavbarPrivate() {
   const [user, setUser] = useState(null);
@@ -18,8 +19,9 @@ export default function NavbarPrivate() {
 
   const handleLogout = () => {
     localStorage.removeItem("access_token");
-    localStorage.removeItem("user_profile");
+    localStorage.removeItem("user_google");
     navigate("/");
+    toast.success("Logout successful 👌");
   };
 
   return (
@@ -84,7 +86,6 @@ export default function NavbarPrivate() {
                   <button
                     className="flex items-center gap-2 w-full text-left px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
                     onClick={() => {
-                      navigate("/settings");
                       setDropdownOpen(false);
                     }}
                   >
