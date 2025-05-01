@@ -17,10 +17,12 @@ router.get(
 
 // User Profile
 router.get("/trips/user", authentication, UserController.getTripByUserId);
+router.put("/users/profile", authentication, UserController.updateProfile);
 
 // Destination Generator AI
 router.get("/trips", authentication, TripController.getFindTrip);
 router.post("/trips", authentication, TripController.createTrips);
+router.delete("/trips/:id", authentication, TripController.deleteTrip);
 router.post("/ai/generate-plan", authentication, AiController.generatePlan);
 router.get("/places", authentication, TripController.getPlacesTrip);
 router.get("/places/details", authentication, TripController.getPlaceDetails);

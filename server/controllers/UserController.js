@@ -55,4 +55,18 @@ module.exports = class UserController {
       next(error);
     }
   }
+
+  static async updateProfile(req, res, next) {
+    try {
+      const { username, email, avatarUrl } = req.body;
+      await User.update(
+        { username, email, avatarUrl },
+        { where: { id: req.user.id } }
+      );
+      res.json({ message: "Profile updated successfully" });
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+  }
 };

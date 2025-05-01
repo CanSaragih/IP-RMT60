@@ -142,4 +142,18 @@ module.exports = class TripController {
       next(error);
     }
   }
+
+  static async deleteTrip(req, res, next) {
+    try {
+      await Trip.destroy({
+        where: {
+          id: req.params.id,
+        },
+      });
+      res.status(200).json({ message: "Trip deleted successfully" });
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+  }
 };
