@@ -27,7 +27,8 @@ export default function DetailDestination() {
       <div className="p-10 text-gray-600 text-xl font-semibold">Loading...</div>
     );
 
-  const { name, DestinationDetail, latitude, longitude } = destination;
+  const { name, DestinationDetail, latitude, longitude, imageUrl } =
+    destination;
 
   return (
     <>
@@ -35,7 +36,7 @@ export default function DetailDestination() {
         {/* Hero Section */}
         <div className="relative h-[600px] overflow-hidden">
           <motion.img
-            src={`https://source.unsplash.com/1600x900/?${name},landmark`}
+            src={imageUrl}
             alt={name}
             className="w-full h-full object-cover"
             initial={{ scale: 1.1 }}

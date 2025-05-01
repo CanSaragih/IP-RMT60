@@ -52,16 +52,6 @@ export default function DestinationCard({ dest, delay }) {
           </span>
         </div>
       </div>
-
-      {/* Hover effect badge */}
-      <motion.div
-        className="absolute top-4 right-4 bg-green-500 text-white text-xs font-semibold px-3 py-1 rounded-full"
-        initial={{ opacity: 0 }}
-        whileHover={{ opacity: 1 }}
-        transition={{ duration: 0.3 }}
-      >
-        Explore Now
-      </motion.div>
     </motion.div>
   );
 }

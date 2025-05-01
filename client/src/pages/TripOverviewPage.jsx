@@ -199,7 +199,7 @@ export default function TripOverviewPage() {
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Title
+                  Name Places
                 </label>
                 <h1 className="text-2xl md:text-2xl font-extrabold text-gray-900 bg-clip-text hover:text-blue-600 transition-all duration-300 transform hover:scale-101">
                   {editTrip.title}
@@ -207,7 +207,7 @@ export default function TripOverviewPage() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Budget
+                  Budget Estimated
                 </label>
                 <p className="text-3xl font-bold text-blue-600">
                   {formatRupiah(trip.total_budget || 0)}
