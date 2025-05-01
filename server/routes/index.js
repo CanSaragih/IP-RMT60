@@ -32,7 +32,7 @@ router.get(
   ItineraryController.getItinerariesByTripId
 );
 router.post(
-  "/itineraries",
+  "/trips/:tripId/itineraries",
   authentication,
   ItineraryController.createItinerary
 );

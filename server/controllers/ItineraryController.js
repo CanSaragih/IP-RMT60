@@ -19,6 +19,16 @@ module.exports = class ItineraryController {
 
   static async createItinerary(req, res, next) {
     try {
+      const { tripId } = req.params;
+      const { dayNumber, location, activity, notes } = req.body;
+      const itinerary = await Itinerary.create({
+        tripId,
+        dayNumber,
+        location,
+        activity,
+        notes,
+      });
+      res.status(201).json(itinerary);
     } catch (error) {
       console.log(error);
       next(error);
