@@ -37,6 +37,13 @@ module.exports = (sequelize, DataTypes) => {
           isDecimal: { msg: "Longitude must be a decimal number" },
         },
       },
+      imageUrl: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        validate: {
+          isUrl: { msg: "Image URL must be a valid URL" },
+        },
+      },
     },
     {
       sequelize,
