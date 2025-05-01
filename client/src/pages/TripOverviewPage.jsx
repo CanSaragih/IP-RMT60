@@ -180,10 +180,10 @@ export default function TripOverviewPage() {
               ))}
             </ul>
             <Link
-              to="/trips"
+              to="/your-profile"
               className="mt-4 inline-block w-full text-center bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors"
             >
-              Back to Trips
+              Back to Profile
             </Link>
           </div>
         </div>

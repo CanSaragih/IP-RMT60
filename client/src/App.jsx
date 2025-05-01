@@ -8,6 +8,7 @@ import PublicPage from "./pages/Public.page";
 import DetailDestination from "./pages/DetailDesination";
 import ItineraryPage from "./pages/ItineraryPage";
 import TripOverviewPage from "./pages/TripOverviewPage";
+import ProfilePage from "./pages/ProfilePage";
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
             path="/trips/:tripId/overview"
             element={<TripOverviewPage />}
           />
+          <Route path="/your-profile" element={<ProfilePage />} />
         </Route>
       </Routes>
     </BrowserRouter>

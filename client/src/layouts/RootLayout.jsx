@@ -1,5 +1,6 @@
 import { Navigate, Outlet } from "react-router";
 import Navbar from "../components/Navbar";
+import NavbarPrivate from "../components/NavbarPrivate";
 
 export function PublicLayout() {
   const access_token = localStorage.getItem("access_token");
@@ -22,7 +23,7 @@ export function PrivateLayout() {
   }
   return (
     <>
-      <Navbar />
+      <NavbarPrivate />
       <Outlet />
     </>
   );
