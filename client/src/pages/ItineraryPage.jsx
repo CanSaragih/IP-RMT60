@@ -3,6 +3,7 @@ import { format, eachDayOfInterval, parseISO } from "date-fns";
 import { https } from "../helpers/https";
 import { useParams } from "react-router";
 import { ChevronDown, ChevronRight, StickyNote } from "lucide-react";
+import { toast } from "react-toastify";
 
 export default function ItineraryPage() {
   const { tripId } = useParams();
@@ -51,6 +52,47 @@ export default function ItineraryPage() {
     setNotesVisible((prev) => ({ ...prev, [day]: !prev[day] }));
   };
 
+  const handleSaveItinerary = async () => {
+    try {
+      const activities = [];
+      const notes = [];
+
+      dateRange.forEach((_, idx) => {
+        const day = idx + 1;
+        const activityInput = document.getElementById(`activity-${day}`);
+        const notesInput = document.getElementById(`notes-${day}`);
+
+        activities.push(activityInput?.value || "");
+        notes.push(notesInput?.value || "");
+      });
+
+      // POST itinerary to backend
+      await https.post(
+        `/trips/${tripId}/itineraries`,
+        {
+          dayNumber: dateRange.length,
+          location: trip.title,
+          activity: activities.join(", "),
+          notes: notes.join(", "),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        }
+      );
+
+      toast.success("Trip saved successfully! 👌");
+      fetchItineraries(); // refresh
+    } catch (error) {
+      console.error("Failed to save trip:", error);
+      toast.error(
+        error.response.data.message ||
+          "Failed to save trip. Please try again.😢 "
+      );
+    }
+  };
+
   if (!trip || !user) return <div>Loading trip...</div>;
 
   const dateRange = eachDayOfInterval({
@@ -76,11 +118,7 @@ export default function ItineraryPage() {
         <div className="absolute left-1/2 transform -translate-x-1/2 top-[200px] bg-white rounded-2xl shadow-xl px-6 py-4 w-[90%] max-w-3xl flex items-center space-x-4">
           <div className="flex-1">
             <div className="flex items-start justify-between">
-              <h1
-                contentEditable
-                suppressContentEditableWarning
-                className="text-3xl font-bold bg-gray-100 px-3 py-1 rounded-lg"
-              >
+              <h1 className="text-3xl font-bold px-3 py-1 rounded-lg">
                 {trip.title}
               </h1>
               <button className="text-gray-500 hover:text-gray-700">
@@ -143,12 +181,14 @@ export default function ItineraryPage() {
               {isOpen && (
                 <div className="mt-3 space-y-2 pl-6">
                   <input
+                    id={`activity-${dayNumber}`}
                     defaultValue={existing?.activity}
                     placeholder="Activity"
                     className="w-full border px-3 py-2 rounded-md"
                   />
                   {showNotes && (
                     <textarea
+                      id={`notes-${dayNumber}`}
                       defaultValue={existing?.notes}
                       placeholder="Notes..."
                       className="w-full border px-3 py-2 rounded-md"
@@ -159,6 +199,16 @@ export default function ItineraryPage() {
             </div>
           );
         })}
+      </div>
+
+      {/* Save Button */}
+      <div className="text-center mt-8">
+        <button
+          onClick={handleSaveItinerary}
+          className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700"
+        >
+          Save Itinerary
+        </button>
       </div>
     </div>
   );
