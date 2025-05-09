@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "jest --verbose --detectOpenHandles --forceExit",
+    "test": "jest --config=./package.json --forceExit --runInBand --detectOpenHandles",
     "dev": "npx nodemon bin/www"
   },
   "keywords": [],
@@ -27,5 +27,14 @@
     "nodemon": "^3.1.10",
     "sequelize-cli": "^6.6.2",
     "supertest": "^7.1.0"
+  },
+  "jest": {
+    "testTimeout": 30000,
+    "setupFilesAfterEnv": [
+      "./__test__/setup.js"
+    ],
+    "testEnvironment": "node",
+    "forceExit": true,
+    "detectOpenHandles": true
   }
 }

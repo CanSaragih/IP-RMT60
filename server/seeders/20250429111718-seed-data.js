@@ -20,16 +20,6 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
-      {
-        id: 2, // yang dipakai di test (cocok dengan token JWT test)
-        email: "dummy2@test.com",
-        username: "Dummy Two",
-        provider: "google",
-        providerId: "dummy-id-2",
-        avatarUrl: "https://dummyavatar.com/2.png",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
     ]);
 
     await queryInterface.bulkInsert(
