@@ -3,15 +3,12 @@ const request = require("supertest");
 const app = require("../app");
 const helpers = require("./test-helpers");
 
-// Add delay function
-const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+// Increase test timeout
+jest.setTimeout(30000);
 
 let access_token;
 let testUserId;
 let testTripId;
-
-// Increase test timeout
-jest.setTimeout(30000);
 
 beforeAll(async () => {
   try {
@@ -24,12 +21,11 @@ beforeAll(async () => {
       return;
     }
 
-    // Create a test trip
-    const tripRes = await helpers.retryRequest(
+    // Create a test trip using our new createTestResource helper
+    const testTrip = await helpers.createTestResource(
       app,
-      "post",
-      "/trips",
       access_token,
+      "/trips",
       {
         name: `Existing Test Trip ${Date.now()}`,
         startDate: "2023-10-01",
@@ -38,8 +34,7 @@ beforeAll(async () => {
       }
     );
 
-    // Extract trip ID using our helper
-    testTripId = helpers.extractId(tripRes);
+    testTripId = testTrip.id;
 
     // Log setup results for debugging
     console.log("Trip test setup complete:", {
@@ -47,7 +42,8 @@ beforeAll(async () => {
       tripId: testTripId,
     });
 
-    await delay(1000); // Wait for trip creation to complete
+    // Use helpers delay method
+    await helpers.delay(1000);
   } catch (error) {
     console.error("Test setup error:", error);
   }
@@ -67,7 +63,12 @@ describe("Trip Routes", () => {
           access_token
         );
 
-        expect(res.statusCode).toBeLessThan(400);
+        // Use our new validation helper
+        helpers.validateResponse(res, {
+          statusCode: [200, 201, 202],
+          hasProperty: ["trips"],
+        });
+
         expect(helpers.assertArrayResponse(res)).toBe(true);
       } catch (error) {
         console.error("Test error:", error);
@@ -199,7 +200,7 @@ describe("Trip Routes", () => {
           console.warn("Failed to get trip ID for delete test");
         }
 
-        await delay(1000); // Increased wait time
+        await helpers.delay(1000); // Increased wait time
       } catch (error) {
         console.error("Setup error:", error);
       }

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "jest --config=./package.json --forceExit --runInBand --detectOpenHandles",
+    "test": "jest --coverage --verbose --config=./package.json --forceExit --runInBand --detectOpenHandles",
     "dev": "npx nodemon bin/www"
   },
   "keywords": [],
@@ -31,7 +31,7 @@
   "jest": {
     "testTimeout": 30000,
     "setupFilesAfterEnv": [
-      "./__test__/setup.js"
+      "./jest.setup.js"
     ],
     "testEnvironment": "node",
     "forceExit": true,

@@ -27,7 +27,7 @@ describe("Integration Tests", () => {
       expect(res.statusCode).toBeLessThan(400);
 
       // Wait for registration to process
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await helpers.delay(1000);
     } catch (error) {
       console.error("Test error:", error);
       throw error;
@@ -36,17 +36,21 @@ describe("Integration Tests", () => {
 
   it("should login and receive a token", async () => {
     try {
-      const res = await request(app).post("/login").send({
+      const res = await helpers.retryRequest(app, "post", "/login", null, {
         email: testEmail,
         password: testPassword,
       });
 
-      expect(res.statusCode).toBe(200);
-      expect(res.body).toHaveProperty("access_token");
+      // Use our validation helper
+      helpers.validateResponse(res, {
+        statusCode: 200,
+        hasProperty: ["access_token"],
+      });
+
       access_token = res.body.access_token;
 
       // Wait for token generation
-      await delay(500);
+      await helpers.delay(500);
     } catch (error) {
       console.error("Test error:", error);
       throw error;
@@ -91,7 +95,7 @@ describe("Integration Tests", () => {
       expect(destinationId).toBeDefined();
 
       // Wait for destination creation
-      await delay(1000);
+      await helpers.delay(1000);
     } catch (error) {
       console.error("Test error:", error);
       throw error;
@@ -136,7 +140,7 @@ describe("Integration Tests", () => {
       expect(tripId).toBeDefined();
 
       // Wait for trip creation
-      await delay(1000);
+      await helpers.delay(1000);
     } catch (error) {
       console.error("Test error:", error);
       throw error;

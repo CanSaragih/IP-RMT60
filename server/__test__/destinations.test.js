@@ -5,210 +5,231 @@ const helpers = require("./test-helpers");
 // Increase test timeout
 jest.setTimeout(30000);
 
-let access_token;
-let testDestinationId;
+// Create a test context to maintain state between tests
+const TestContext = {
+  uniqueId: Date.now(),
+  credentials: null,
+  token: null,
+  destinationIds: [],
 
-beforeAll(async () => {
-  try {
-    // Use our helper to set up a test user reliably
-    const testUser = await helpers.setupTestUser(app, "desttest");
-    access_token = testUser.token;
+  // Helper to create random data with this context's uniqueId
+  generateName(prefix) {
+    return `${prefix}-${this.uniqueId}-${Math.floor(Math.random() * 1000)}`;
+  },
+};
 
-    // If setup failed, use a fallback token
-    if (!access_token) {
-      console.warn("Using fallback token for destinations tests");
-      access_token = helpers.getHardcodedToken();
-    }
-
-    // Create test destination
-    const createRes = await helpers.retryRequest(
-      app,
-      "post",
-      "/destinations",
-      access_token,
-      {
-        name: `Test Destination ${Date.now()}`,
-        country: "Test Country",
-        description: "A test destination",
-        imageUrl: "https://example.com/image.jpg",
-      }
-    );
-
-    // Extract destination ID
-    testDestinationId = helpers.extractId(createRes);
-
-    console.log("Destination test setup complete:", {
-      haveToken: !!access_token,
-      destinationId: testDestinationId,
-    });
-  } catch (error) {
-    console.error("Test setup error:", error);
-  }
-});
-
+// Create a more structured before/after pattern
 describe("Destination Routes", () => {
+  // Setup before any tests
+  beforeAll(async () => {
+    try {
+      // Generate test data
+      const testData = helpers.generateTestData();
+      TestContext.credentials = testData.user("dest");
+
+      // Set up a test user using builder pattern
+      const registerRes = await helpers
+        .requestBuilder(app)
+        .post()
+        .path("/register")
+        .withBody(TestContext.credentials)
+        .execute();
+
+      await helpers.delay(1000);
+
+      // Login to get token
+      const loginRes = await helpers
+        .requestBuilder(app)
+        .post()
+        .path("/login")
+        .withBody({
+          email: TestContext.credentials.email,
+          password: TestContext.credentials.password,
+        })
+        .expectStatus([200, 201])
+        .execute();
+
+      TestContext.token = loginRes.body.access_token;
+
+      // If setup failed, use a fallback token
+      if (!TestContext.token) {
+        console.warn("Using fallback token for destinations tests");
+        TestContext.token = helpers.getHardcodedToken();
+      }
+
+      // Create a sample destination
+      const destinationData = testData.destination();
+
+      const createRes = await helpers
+        .requestBuilder(app)
+        .post()
+        .path("/destinations")
+        .withToken(TestContext.token)
+        .withBody(destinationData)
+        .execute();
+
+      const newDestId = helpers.extractId(createRes);
+      if (newDestId) {
+        TestContext.destinationIds.push(newDestId);
+        console.log(`Created test destination with ID: ${newDestId}`);
+      }
+    } catch (error) {
+      console.error("Test setup error:", error);
+    }
+  });
+
+  // Clean up after all tests
+  afterAll(async () => {
+    // Clean up created destinations
+    try {
+      for (const id of TestContext.destinationIds) {
+        await helpers
+          .requestBuilder(app)
+          .delete()
+          .path(`/destinations/${id}`)
+          .withToken(TestContext.token)
+          .execute();
+
+        console.log(`Cleaned up destination with ID: ${id}`);
+      }
+    } catch (error) {
+      console.error("Cleanup error:", error);
+    }
+  });
+
   describe("GET /destinations", () => {
     it("should return a list of destinations", async () => {
       // Skip test if setup failed
-      if (helpers.skipTestIf(!access_token, "Skipping test - no token")) return;
-
-      try {
-        const res = await helpers.retryRequest(
-          app,
-          "get",
-          "/destinations",
-          access_token
-        );
-
-        expect(res.statusCode).toBeLessThan(400);
-      } catch (error) {
-        console.error("Test error:", error);
-        throw error;
+      if (!TestContext.token) {
+        console.warn("Skipping test - no token available");
+        return;
       }
+
+      // Use the smart expect for cleaner assertions
+      const res = await helpers
+        .requestBuilder(app)
+        .get()
+        .path("/destinations")
+        .withToken(TestContext.token)
+        .execute();
+
+      helpers
+        .smartExpect(res)
+        .toBeSuccessful()
+        .toHaveBodyProperty("destinations");
     });
   });
 
   describe("GET /destinations/:id", () => {
     it("should return a destination by ID", async () => {
-      // Skip test if prerequisites are missing
-      if (
-        helpers.skipTestIf(
-          !access_token || !testDestinationId,
-          "Skipping test - missing token or destination ID"
-        )
-      )
+      // Skip test if no destination exists
+      if (TestContext.destinationIds.length === 0) {
+        console.warn("Skipping test - no destination IDs available");
         return;
-
-      try {
-        const res = await helpers.retryRequest(
-          app,
-          "get",
-          `/destinations/${testDestinationId}`,
-          access_token
-        );
-
-        expect(res.statusCode).toBeLessThan(400);
-      } catch (error) {
-        console.error("Test error:", error);
-        throw error;
       }
+
+      const destId = TestContext.destinationIds[0];
+
+      const res = await helpers
+        .requestBuilder(app)
+        .get()
+        .path(`/destinations/${destId}`)
+        .withToken(TestContext.token)
+        .execute();
+
+      helpers.smartExpect(res).toBeSuccessful().toHaveBodyProperty("id");
     });
   });
 
   describe("POST /destinations", () => {
     it("should create a new destination", async () => {
-      // Skip test if setup failed
-      if (helpers.skipTestIf(!access_token, "Skipping test - no token")) return;
+      // Skip test if no token
+      if (!TestContext.token) {
+        console.warn("Skipping test - no token available");
+        return;
+      }
 
-      try {
-        const res = await helpers.retryRequest(
-          app,
-          "post",
-          "/destinations",
-          access_token,
-          {
-            name: `New Test Destination ${Date.now()}`,
-            country: "Test Country",
-            description: "A test destination",
-            imageUrl: "https://example.com/image.jpg",
-          }
-        );
+      // Generate unique destination data
+      const destinationData = helpers.generateTestData().destination("new");
 
-        expect(res.statusCode).toBeLessThan(300);
-      } catch (error) {
-        console.error("Test error:", error);
-        throw error;
+      const res = await helpers
+        .requestBuilder(app)
+        .post()
+        .path("/destinations")
+        .withToken(TestContext.token)
+        .withBody(destinationData)
+        .execute();
+
+      helpers.smartExpect(res).toBeSuccessful();
+
+      // Store the new destination ID for cleanup
+      const newId = helpers.extractId(res);
+      if (newId) {
+        TestContext.destinationIds.push(newId);
       }
     });
   });
 
   describe("PUT /destinations/:id", () => {
     it("should update a destination by ID", async () => {
-      try {
-        // Skip if no destination ID was created
-        if (!testDestinationId) {
-          console.warn("Skipping update destination test - no destination ID");
-          return;
-        }
-
-        const res = await request(app)
-          .put(`/destinations/${testDestinationId}`)
-          .set("access_token", access_token)
-          .send({
-            name: `Updated Destination ${uniqueId}`,
-            country: "Updated Country",
-            description: "An updated test destination",
-          });
-
-        // Check for success status code
-        expect(res.statusCode).toBeGreaterThanOrEqual(200);
-        expect(res.statusCode).toBeLessThan(300);
-      } catch (error) {
-        console.error("Test error:", error);
-        throw error;
+      // Skip if no destinations
+      if (TestContext.destinationIds.length === 0) {
+        console.warn("Skipping test - no destination IDs available");
+        return;
       }
+
+      const destId = TestContext.destinationIds[0];
+
+      const res = await helpers
+        .requestBuilder(app)
+        .put()
+        .path(`/destinations/${destId}`)
+        .withToken(TestContext.token)
+        .withBody({
+          name: TestContext.generateName("Updated"),
+          country: "Updated Country",
+          description: "An updated test destination",
+        })
+        .execute();
+
+      helpers.smartExpect(res).toBeSuccessful();
     });
   });
 
   describe("DELETE /destinations/:id", () => {
-    let destinationToDelete;
-
-    beforeEach(async () => {
-      try {
-        // Create a destination to delete
-        const createRes = await request(app)
-          .post("/destinations")
-          .set("access_token", access_token)
-          .send({
-            name: `Destination to Delete ${uniqueId}`,
-            country: "Test Country",
-            description: "This will be deleted",
-            imageUrl: "https://example.com/delete.jpg",
-          });
-
-        // Extract destination ID with multiple fallbacks
-        if (createRes.body.id) {
-          destinationToDelete = createRes.body.id;
-        } else if (
-          createRes.body.destination &&
-          createRes.body.destination.id
-        ) {
-          destinationToDelete = createRes.body.destination.id;
-        } else {
-          // Try to find any ID in the response
-          const bodyStr = JSON.stringify(createRes.body);
-          const idMatch = bodyStr.match(/"id":\s*(\d+)/);
-          if (idMatch && idMatch[1]) {
-            destinationToDelete = parseInt(idMatch[1], 10);
-          }
-        }
-
-        // Wait for creation to complete
-        await delay(1000);
-      } catch (error) {
-        console.error("Setup error:", error);
-      }
-    });
-
     it("should delete a destination by ID", async () => {
-      try {
-        // Skip if destination creation failed
-        if (!destinationToDelete) {
-          console.warn("Skipping delete test - no destination ID");
-          return;
-        }
+      // Create a destination specifically for deletion
+      const testFlow = helpers.testFlow();
 
-        const res = await request(app)
-          .delete(`/destinations/${destinationToDelete}`)
-          .set("access_token", access_token);
+      const results = await testFlow
+        .addStep("create destination", async () => {
+          const data = helpers.generateTestData().destination("delete");
+          const res = await helpers
+            .requestBuilder(app)
+            .post()
+            .path("/destinations")
+            .withToken(TestContext.token)
+            .withBody(data)
+            .execute();
 
-        // Check for success status code
-        expect(res.statusCode).toBeGreaterThanOrEqual(200);
-        expect(res.statusCode).toBeLessThan(300);
-      } catch (error) {
-        console.error("Test error:", error);
-        throw error;
-      }
+          return { deleteId: helpers.extractId(res) };
+        })
+        .addDependentStep("delete destination", "deleteId", async (state) => {
+          const res = await helpers
+            .requestBuilder(app)
+            .delete()
+            .path(`/destinations/${state.deleteId}`)
+            .withToken(TestContext.token)
+            .execute();
+
+          helpers.smartExpect(res).toBeSuccessful();
+          return { deleteResponse: res };
+        })
+        .execute();
+
+      // Verify we got results
+      expect(results.deleteId).toBeDefined();
+      expect(results.deleteResponse).toBeDefined();
     });
   });
 });
