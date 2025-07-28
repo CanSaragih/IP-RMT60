@@ -5,6 +5,7 @@ import { useInView } from "react-intersection-observer"; // Tambahkan ini untuk 
 import { https } from "../helpers/https";
 import DestinationCard from "../components/Destination.Card";
 import LoginModal from "../components/LoginModal";
+import logo from "../assets/logo.png";
 
 export default function PublicPage() {
   const [destinations, setDestinations] = useState([]);
@@ -59,7 +60,7 @@ export default function PublicPage() {
           className="min-h-screen flex flex-col items-center justify-center text-center py-32 px-6 bg-gradient-to-br from-blue-50 via-white to-purple-50 snap-center"
         >
           <motion.img
-            src="/src/assets/logo.png"
+            src={logo}
             alt="layla"
             className="w-60 mb-10"
             initial={{ opacity: 0, scale: 0.8 }}

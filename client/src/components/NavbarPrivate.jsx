@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Search, User, Settings, LogOut } from "lucide-react";
 import { toast } from "react-toastify";
+import logo from "../assets/logo2.png";
 
 export default function NavbarPrivate() {
   const [user, setUser] = useState(null);
@@ -33,7 +34,7 @@ export default function NavbarPrivate() {
           whileHover={{ scale: 1.05 }}
           transition={{ duration: 0.2 }}
         >
-          <img src="/src/assets/logo2.png" alt="logo" className="w-12 h-12" />
+          <img src={logo} alt="logo" className="w-12 h-12" />
           <span className="text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900">
             <Link to="/">Planorama</Link>
           </span>

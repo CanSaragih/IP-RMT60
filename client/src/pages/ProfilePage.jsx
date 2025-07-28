@@ -116,7 +116,6 @@ export default function ProfilePage() {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 font-sans">
       {/* Hero Section */}
       <div className="relative bg-white/90 backdrop-blur-2xl shadow-xl py-12 overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/travel-hero.jpg')] bg-cover bg-center opacity-10"></div>
         <div className="relative max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center gap-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
